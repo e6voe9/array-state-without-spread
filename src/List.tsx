@@ -1,4 +1,4 @@
-export const List = ({ items, onDelete }) => {
+export const List = ({ items, onDelete, onPrettify }) => {
   return (
     <ul>
       {items.map(({ id, name, number }) => (
@@ -17,6 +17,9 @@ export const List = ({ items, onDelete }) => {
           </div>
           <button onClick={() => onDelete(id)} type="button">
             remove
+          </button>
+           <button onClick={() => onPrettify(id)} type="button">
+            prettify
           </button>
         </li>
       ))}

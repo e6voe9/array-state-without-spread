@@ -24,6 +24,18 @@ function App() {
     contacts = contacts.filter((c) => c.id !== id);
     forceReRender();
   }, []);
+  
+  const prettifyNumber = useCallback((id: string) => {
+    contacts.forEach((c, index) => {
+      if (c.id !== id) return;
+      
+       contacts[index].number = contacts[index].number
+        .split("")
+        .join(" ")
+    })
+    
+    forceReRender();
+  }, [])
 
   const sortContacts = useCallback(() => {
     contacts.sort((a, b) => a.name.localeCompare(b.name));
@@ -72,7 +84,7 @@ function App() {
 
       {contacts.length ? <h2>List of contacts:</h2> : <h2>No contacts!</h2>}
 
-      <List items={contacts} onDelete={deleteContact} />
+      <List items={contacts} onDelete={deleteContact} onPrettify={prettifyNumber}/>
 
       {contacts.length !== 0 && (
         <button onClick={sortContacts} type="button">
