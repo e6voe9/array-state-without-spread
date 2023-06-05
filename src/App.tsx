@@ -1,6 +1,7 @@
-import { useState, SyntheticEvent, useEffect } from "react";
+import { useState, SyntheticEvent, useEffect, useCallback } from "react";
 import { nanoid } from "nanoid";
 import "./App.css";
+import { List } from "./List";
 
 interface IUser {
   id: string;
@@ -14,6 +15,20 @@ let contacts: Users = [];
 
 function App() {
   const [_, setContactsListDidUpdate] = useState(false);
+  const forceReRender = useCallback(
+    () => setContactsListDidUpdate((v) => !v),
+    []
+  );
+
+  const deleteContact = useCallback((id: string) => {
+    contacts = contacts.filter((c) => c.id !== id);
+    forceReRender();
+  }, []);
+
+  const sortContacts = useCallback(() => {
+    contacts.sort((a, b) => a.name.localeCompare(b.name));
+    forceReRender();
+  }, []);
 
   const submitHandler = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -36,7 +51,7 @@ function App() {
     target.reset();
 
     // calling this function to trigger re-render
-    setContactsListDidUpdate((v) => !v);
+    forceReRender();
   };
 
   useEffect(() => {
@@ -54,19 +69,16 @@ function App() {
       </form>
 
       <hr />
-      {contacts.length ? (
-        <h2 key="list-1">List of contacts:</h2>
-      ) : (
-        <h2 key="list-2">No contacts!</h2>
-      )}
 
-      <ul>
-        {contacts.map(({ id, name, number }) => (
-          <li key={id}>
-            <b>{name}: </b> {number}
-          </li>
-        ))}
-      </ul>
+      {contacts.length ? <h2>List of contacts:</h2> : <h2>No contacts!</h2>}
+
+      <List items={contacts} onDelete={deleteContact} />
+
+      {contacts.length !== 0 && (
+        <button onClick={sortContacts} type="button">
+          Sort the list
+        </button>
+      )}
     </div>
   );
 }
