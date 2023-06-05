@@ -1,11 +1,12 @@
 ## Benchmark
 I don't completely sure if I can believe this benchmark, but it's pretty clear that .push() is a lot faster than copying whole array with spread operator.
 https://jsbench.me/vsli34vlla
-With just 10 elements in array the results are:
-spread - 123k operations per second (123000 ops/s)
-.push() - 34M operations per second (34000000 ops/s)
 
-.push() is around 275 times faster
+With just 10 elements in array the results are:
+- spread - 123k operations per second (123000 ops/s)
+- .push() - 34M operations per second (34000000 ops/s)
+
+**.push() is around 275 times faster**
 
 ## Idea
 We can use .push() instead of spread to update state in react.
